@@ -5,6 +5,7 @@ import {
   isOverlapping,
   parseDateTime,
 } from '../../utils/eventOverlap';
+import { createRandomEvent } from '../utils';
 
 describe('parseDateTime', () => {
   it('2024-07-01 14:30을 정확한 Date 객체로 변환한다', () => {
@@ -57,11 +58,55 @@ describe('parseDateTime', () => {
 });
 
 describe('convertEventToDateRange', () => {
-  it('일반적인 이벤트를 올바른 시작 및 종료 시간을 가진 객체로 변환한다', () => {});
+  it('일반적인 이벤트를 올바른 시작 및 종료 시간을 가진 객체로 변환한다', () => {
+    // Arrange
+    const event = createRandomEvent({
+      date: '2024-07-19',
+      startTime: '13:00',
+      endTime: '14:00',
+    });
 
-  it('잘못된 날짜 형식의 이벤트에 대해 Invalid Date를 반환한다', () => {});
+    // Act
+    const parsedDateTime = convertEventToDateRange(event);
 
-  it('잘못된 시간 형식의 이벤트에 대해 Invalid Date를 반환한다', () => {});
+    //  Assert
+    expect(parsedDateTime).toEqual({
+      start: new Date('2024-07-19T13:00'),
+      end: new Date('2024-07-19T14:00'),
+    });
+  });
+
+  it('잘못된 날짜 형식의 이벤트에 대해 Invalid Date를 반환한다', () => {
+    // Arrange
+    const event = createRandomEvent({
+      date: '2024-07-19-12',
+      startTime: '13:00',
+      endTime: '14:00',
+    });
+
+    // Act
+    const parsedDateTime = convertEventToDateRange(event);
+
+    //  Assert
+    expect(parsedDateTime.start.toString()).toBe('Invalid Date');
+    expect(parsedDateTime.end.toString()).toBe('Invalid Date');
+  });
+
+  it('잘못된 시간 형식의 이벤트에 대해 Invalid Date를 반환한다', () => {
+    // Arrange
+    const event = createRandomEvent({
+      date: '2024-07-19',
+      startTime: '13:4444',
+      endTime: '14:4444',
+    });
+
+    // Act
+    const parsedDateTime = convertEventToDateRange(event);
+
+    //  Assert
+    expect(parsedDateTime.start.toString()).toBe('Invalid Date');
+    expect(parsedDateTime.end.toString()).toBe('Invalid Date');
+  });
 });
 
 describe('isOverlapping', () => {
