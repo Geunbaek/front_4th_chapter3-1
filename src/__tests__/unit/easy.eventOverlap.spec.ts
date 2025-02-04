@@ -110,9 +110,45 @@ describe('convertEventToDateRange', () => {
 });
 
 describe('isOverlapping', () => {
-  it('두 이벤트가 겹치는 경우 true를 반환한다', () => {});
+  it('두 이벤트가 겹치는 경우 true를 반환한다', () => {
+    // Arrange
+    const event1 = createRandomEvent({
+      date: '2024-07-19',
+      startTime: '13:00',
+      endTime: '14:00',
+    });
+    const event2 = createRandomEvent({
+      date: '2024-07-19',
+      startTime: '13:00',
+      endTime: '14:00',
+    });
 
-  it('두 이벤트가 겹치지 않는 경우 false를 반환한다', () => {});
+    // Act
+    const result = isOverlapping(event1, event2);
+
+    //  Assert
+    expect(result).toBe(true);
+  });
+
+  it('두 이벤트가 겹치지 않는 경우 false를 반환한다', () => {
+    // Arrange
+    const event1 = createRandomEvent({
+      date: '2024-07-19',
+      startTime: '13:00',
+      endTime: '14:00',
+    });
+    const event2 = createRandomEvent({
+      date: '2024-07-19',
+      startTime: '14:00',
+      endTime: '15:00',
+    });
+
+    // Act
+    const result = isOverlapping(event1, event2);
+
+    //  Assert
+    expect(result).toBe(false);
+  });
 });
 
 describe('findOverlappingEvents', () => {
