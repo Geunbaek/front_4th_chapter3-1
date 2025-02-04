@@ -1,6 +1,6 @@
 import { http, HttpResponse } from 'msw';
 
-import { addEvent, makeNewEvent } from './util';
+import { addEvent, makeNewEvent } from './utils';
 import { Event, EventForm } from '../../types';
 
 export const getEvents = (mockData: { events: Event[] }) => {
@@ -13,7 +13,7 @@ export const createEvent = (mockData: { events: Event[] }) => {
   return http.post('/api/events', async ({ request }) => {
     const eventForm = (await request.json()) as EventForm;
 
-    const newEvent = makeNewEvent(mockData.events, eventForm);
+    const newEvent = makeNewEvent(eventForm);
     mockData.events = addEvent(mockData.events, newEvent);
 
     return HttpResponse.json(mockData);
