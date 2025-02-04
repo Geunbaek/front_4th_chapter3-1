@@ -1,4 +1,3 @@
-import { Event } from '../../types';
 import { createNotificationMessage, getUpcomingEvents } from '../../utils/notificationUtils';
 import { createRandomEvent } from '../utils';
 
@@ -121,5 +120,21 @@ describe('getUpcomingEvents', () => {
 });
 
 describe('createNotificationMessage', () => {
-  it('올바른 알림 메시지를 생성해야 한다', () => {});
+  it('올바른 알림 메시지를 생성해야 한다', () => {
+    // Arrange
+    const event1 = createRandomEvent({
+      date: '2024-07-10',
+      startTime: '12:00',
+      endTime: '13:00',
+      notificationTime: 10,
+    });
+
+    // Act
+    const notificationMessage = createNotificationMessage(event1);
+
+    // Assert
+    expect(notificationMessage).toBe(
+      `${event1.notificationTime}분 후 ${event1.title} 일정이 시작됩니다.`
+    );
+  });
 });
