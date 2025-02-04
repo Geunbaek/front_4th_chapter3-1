@@ -10,6 +10,7 @@ import {
   getWeeksAtMonth,
   isDateInRange,
 } from '../../utils/dateUtils';
+import { createRandomEvent } from '../utils';
 
 describe('getDaysInMonth', () => {
   it('1월은 31일 수를 반환한다', () => {
@@ -208,17 +209,116 @@ describe('getWeekDates', () => {
 });
 
 describe('getWeeksAtMonth', () => {
-  it('2024년 7월 1일의 올바른 주 정보를 반환해야 한다', () => {});
+  it('2024년 7월 1일의 올바른 주 정보를 반환해야 한다', () => {
+    // Arrange
+    const date = new Date('2024-07-01');
+
+    // Act
+    const weeks = getWeeksAtMonth(date);
+
+    // Assert
+    expect(weeks).toMatchObject([
+      [null, 1, 2, 3, 4, 5, 6],
+      [7, 8, 9, 10, 11, 12, 13],
+      [14, 15, 16, 17, 18, 19, 20],
+      [21, 22, 23, 24, 25, 26, 27],
+      [28, 29, 30, 31, null, null, null],
+    ]);
+  });
 });
 
 describe('getEventsForDay', () => {
-  it('특정 날짜(1일)에 해당하는 이벤트만 정확히 반환한다', () => {});
+  it('특정 날짜(1일)에 해당하는 이벤트만 정확히 반환한다', () => {
+    // Arrange
+    const testEvent1 = createRandomEvent({
+      date: formatDate(new Date('2024-02-01')),
+    });
+    const testEvent2 = createRandomEvent({
+      date: formatDate(new Date('2024-02-02')),
+    });
+    const testEvent3 = createRandomEvent({
+      date: formatDate(new Date('2024-03-02')),
+    });
+    const testEvent4 = createRandomEvent({
+      date: formatDate(new Date('2024-04-01')),
+    });
+    const testEvents = [testEvent1, testEvent2, testEvent3, testEvent4];
 
-  it('해당 날짜에 이벤트가 없을 경우 빈 배열을 반환한다', () => {});
+    // Act
+    const targetEvents = getEventsForDay(testEvents, 1);
 
-  it('날짜가 0일 경우 빈 배열을 반환한다', () => {});
+    // Assert
+    expect(targetEvents).toMatchObject([testEvent1, testEvent4]);
+  });
 
-  it('날짜가 32일 이상인 경우 빈 배열을 반환한다', () => {});
+  it('해당 날짜에 이벤트가 없을 경우 빈 배열을 반환한다', () => {
+    // Arrange
+    const testEvent1 = createRandomEvent({
+      date: formatDate(new Date('2024-02-01')),
+    });
+    const testEvent2 = createRandomEvent({
+      date: formatDate(new Date('2024-02-02')),
+    });
+    const testEvent3 = createRandomEvent({
+      date: formatDate(new Date('2024-03-02')),
+    });
+    const testEvent4 = createRandomEvent({
+      date: formatDate(new Date('2024-04-01')),
+    });
+    const testEvents = [testEvent1, testEvent2, testEvent3, testEvent4];
+
+    // Act
+    const targetEvents = getEventsForDay(testEvents, 3);
+
+    // Assert
+    expect(targetEvents).toMatchObject([]);
+  });
+
+  it('날짜가 0일 경우 빈 배열을 반환한다', () => {
+    // Arrange
+    const testEvent1 = createRandomEvent({
+      date: formatDate(new Date('2024-02-01')),
+    });
+    const testEvent2 = createRandomEvent({
+      date: formatDate(new Date('2024-02-02')),
+    });
+    const testEvent3 = createRandomEvent({
+      date: formatDate(new Date('2024-03-02')),
+    });
+    const testEvent4 = createRandomEvent({
+      date: formatDate(new Date('2024-04-01')),
+    });
+    const testEvents = [testEvent1, testEvent2, testEvent3, testEvent4];
+
+    // Act
+    const targetEvents = getEventsForDay(testEvents, 0);
+
+    // Assert
+    expect(targetEvents).toMatchObject([]);
+  });
+
+  it('날짜가 32일 이상인 경우 빈 배열을 반환한다', () => {
+    // Arrange
+    const testEvent1 = createRandomEvent({
+      date: formatDate(new Date('2024-02-01')),
+    });
+    const testEvent2 = createRandomEvent({
+      date: formatDate(new Date('2024-02-02')),
+    });
+    const testEvent3 = createRandomEvent({
+      date: formatDate(new Date('2024-03-02')),
+    });
+    const testEvent4 = createRandomEvent({
+      date: formatDate(new Date('2024-04-01')),
+    });
+    const testEvents = [testEvent1, testEvent2, testEvent3, testEvent4];
+
+    // Act
+    const targetEvents = getEventsForDay(testEvents, 32);
+
+    // Assert
+    expect(targetEvents).toMatchObject([]);
+  });
 });
 
 describe('formatWeek', () => {
