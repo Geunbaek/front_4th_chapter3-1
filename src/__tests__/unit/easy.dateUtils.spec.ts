@@ -1,4 +1,3 @@
-import { Event } from '../../types';
 import {
   fillZero,
   formatDate,
@@ -577,11 +576,47 @@ describe('fillZero', () => {
 });
 
 describe('formatDate', () => {
-  it('날짜를 YYYY-MM-DD 형식으로 포맷팅한다', () => {});
+  it('날짜를 YYYY-MM-DD 형식으로 포맷팅한다', () => {
+    // Arrange
+    const date = new Date('2024-11-11');
 
-  it('day 파라미터가 제공되면 해당 일자로 포맷팅한다', () => {});
+    // Act
+    const formatedDate = formatDate(date);
 
-  it('월이 한 자리 수일 때 앞에 0을 붙여 포맷팅한다', () => {});
+    // Assert
+    expect(formatedDate).toBe('2024-11-11');
+  });
 
-  it('일이 한 자리 수일 때 앞에 0을 붙여 포맷팅한다', () => {});
+  it('day 파라미터가 제공되면 해당 일자로 포맷팅한다', () => {
+    // Arrange
+    const date = new Date('2024-01-01');
+
+    // Act
+    const formatedDate = formatDate(date, 1);
+
+    // Assert
+    expect(formatedDate).toBe('2024-01-01');
+  });
+
+  it('월이 한 자리 수일 때 앞에 0을 붙여 포맷팅한다', () => {
+    // Arrange
+    const date = new Date('2024-02-11');
+
+    // Act
+    const formatedDate = formatDate(date, 13);
+
+    // Assert
+    expect(formatedDate).toBe('2024-02-13');
+  });
+
+  it('일이 한 자리 수일 때 앞에 0을 붙여 포맷팅한다', () => {
+    // Arrange
+    const date = new Date('2024-02-02');
+
+    // Act
+    const formatedDate = formatDate(date);
+
+    // Assert
+    expect(formatedDate).toBe('2024-02-02');
+  });
 });
