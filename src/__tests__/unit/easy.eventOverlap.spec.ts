@@ -152,7 +152,65 @@ describe('isOverlapping', () => {
 });
 
 describe('findOverlappingEvents', () => {
-  it('새 이벤트와 겹치는 모든 이벤트를 반환한다', () => {});
+  it('새 이벤트와 겹치는 모든 이벤트를 반환한다', () => {
+    // Arrange
+    const event1 = createRandomEvent({
+      date: '2024-07-19',
+      startTime: '13:00',
+      endTime: '14:00',
+    });
+    const event2 = createRandomEvent({
+      date: '2024-07-19',
+      startTime: '14:00',
+      endTime: '15:00',
+    });
+    const event3 = createRandomEvent({
+      date: '2024-07-19',
+      startTime: '15:00',
+      endTime: '16:00',
+    });
 
-  it('겹치는 이벤트가 없으면 빈 배열을 반환한다', () => {});
+    const newEvent = createRandomEvent({
+      date: '2024-07-19',
+      startTime: '14:00',
+      endTime: '16:00',
+    });
+
+    // Act
+    const overlappingEvents = findOverlappingEvents(newEvent, [event1, event2, event3]);
+
+    //  Assert
+    expect(overlappingEvents).toMatchObject([event2, event3]);
+  });
+
+  it('겹치는 이벤트가 없으면 빈 배열을 반환한다', () => {
+    // Arrange
+    const event1 = createRandomEvent({
+      date: '2024-07-19',
+      startTime: '13:00',
+      endTime: '14:00',
+    });
+    const event2 = createRandomEvent({
+      date: '2024-07-19',
+      startTime: '14:00',
+      endTime: '15:00',
+    });
+    const event3 = createRandomEvent({
+      date: '2024-07-19',
+      startTime: '15:00',
+      endTime: '16:00',
+    });
+
+    const newEvent = createRandomEvent({
+      date: '2024-07-19',
+      startTime: '16:00',
+      endTime: '17:00',
+    });
+
+    // Act
+    const overlappingEvents = findOverlappingEvents(newEvent, [event1, event2, event3]);
+
+    //  Assert
+    expect(overlappingEvents).toMatchObject([]);
+  });
 });
