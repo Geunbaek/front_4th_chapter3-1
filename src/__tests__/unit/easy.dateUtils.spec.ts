@@ -476,23 +476,104 @@ describe('isDateInRange', () => {
 });
 
 describe('fillZero', () => {
-  test("5를 2자리로 변환하면 '05'를 반환한다", () => {});
+  test("5를 2자리로 변환하면 '05'를 반환한다", () => {
+    // Arrange
+    const number = 5;
 
-  test("10을 2자리로 변환하면 '10'을 반환한다", () => {});
+    // Act
+    const result = fillZero(number, 2);
 
-  test("3을 3자리로 변환하면 '003'을 반환한다", () => {});
+    // Assert
+    expect(result).toBe('05');
+  });
 
-  test("100을 2자리로 변환하면 '100'을 반환한다", () => {});
+  test("10을 2자리로 변환하면 '10'을 반환한다", () => {
+    // Arrange
+    const number = 10;
 
-  test("0을 2자리로 변환하면 '00'을 반환한다", () => {});
+    // Act
+    const result = fillZero(number, 2);
 
-  test("1을 5자리로 변환하면 '00001'을 반환한다", () => {});
+    // Assert
+    expect(result).toBe('10');
+  });
 
-  test("소수점이 있는 3.14를 5자리로 변환하면 '03.14'를 반환한다", () => {});
+  test("3을 3자리로 변환하면 '003'을 반환한다", () => {
+    // Arrange
+    const number = 3;
 
-  test('size 파라미터를 생략하면 기본값 2를 사용한다', () => {});
+    // Act
+    const result = fillZero(number, 3);
 
-  test('value가 지정된 size보다 큰 자릿수를 가지면 원래 값을 그대로 반환한다', () => {});
+    // Assert
+    expect(result).toBe('003');
+  });
+
+  test("100을 2자리로 변환하면 '100'을 반환한다", () => {
+    // Arrange
+    const number = 100;
+
+    // Act
+    const result = fillZero(number, 2);
+
+    // Assert
+    expect(result).toBe('100');
+  });
+
+  test("0을 2자리로 변환하면 '00'을 반환한다", () => {
+    // Arrange
+    const number = 0;
+
+    // Act
+    const result = fillZero(number, 2);
+
+    // Assert
+    expect(result).toBe('00');
+  });
+
+  test("1을 5자리로 변환하면 '00001'을 반환한다", () => {
+    // Arrange
+    const number = 1;
+
+    // Act
+    const result = fillZero(number, 5);
+
+    // Assert
+    expect(result).toBe('00001');
+  });
+
+  test("소수점이 있는 3.14를 5자리로 변환하면 '03.14'를 반환한다", () => {
+    // Arrange
+    const number = 3.14;
+
+    // Act
+    const result = fillZero(number, 5);
+
+    // Assert
+    expect(result).toBe('03.14');
+  });
+
+  test('size 파라미터를 생략하면 기본값 2를 사용한다', () => {
+    // Arrange
+    const number = 5;
+
+    // Act
+    const result = fillZero(number);
+
+    // Assert
+    expect(result).toBe('05');
+  });
+
+  test('value가 지정된 size보다 큰 자릿수를 가지면 원래 값을 그대로 반환한다', () => {
+    // Arrange
+    const number = 50000;
+
+    // Act
+    const result = fillZero(number, 2);
+
+    // Assert
+    expect(result).toBe('50000');
+  });
 });
 
 describe('formatDate', () => {
