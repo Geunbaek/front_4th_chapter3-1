@@ -12,15 +12,64 @@ import {
 } from '../../utils/dateUtils';
 
 describe('getDaysInMonth', () => {
-  it('1월은 31일 수를 반환한다', () => {});
+  it('1월은 31일 수를 반환한다', () => {
+    // Arrange
+    const year = 2024;
+    const month = 1;
 
-  it('4월은 30일 일수를 반환한다', () => {});
+    // Act
+    const days = getDaysInMonth(year, month);
 
-  it('윤년의 2월에 대해 29일을 반환한다', () => {});
+    // Assert
+    expect(days).toBe(31);
+  });
 
-  it('평년의 2월에 대해 28일을 반환한다', () => {});
+  it('4월은 30일 일수를 반환한다', () => {
+    // Arrange
+    const year = 2024;
+    const month = 4;
 
-  it('유효하지 않은 월에 대해 적절히 처리한다', () => {});
+    // Act
+    const days = getDaysInMonth(year, month);
+
+    // Assert
+    expect(days).toBe(30);
+  });
+
+  it('윤년의 2월에 대해 29일을 반환한다', () => {
+    // Arrange
+    const year = 2024;
+    const month = 2;
+
+    // Act
+    const days = getDaysInMonth(year, month);
+
+    // Assert
+    expect(days).toBe(29);
+  });
+
+  it('평년의 2월에 대해 28일을 반환한다', () => {
+    // Arrange
+    const year = 2025;
+    const month = 2;
+
+    // Act
+    const days = getDaysInMonth(year, month);
+
+    // Assert
+    expect(days).toBe(28);
+  });
+
+  it('유효하지 않은 월에 대해 적절히 처리한다', () => {
+    // Arrange
+    const year = 2025;
+    const month = 13;
+
+    // Act & Assert
+    expect(() => getDaysInMonth(year, month)).toThrow(
+      '유효하지 않은 달입니다. 달은 1과 12 사이의 값이어야 합니다.'
+    );
+  });
 });
 
 describe('getWeekDates', () => {
