@@ -3,6 +3,9 @@ import '@testing-library/jest-dom';
 
 import { handlers } from './__mocks__/handlers';
 
+// Date timezone UTC 로 변경
+process.env.TZ = 'UTC';
+
 /* msw */
 export const server = setupServer(...handlers);
 
