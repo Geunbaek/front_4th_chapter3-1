@@ -178,10 +178,10 @@ describe('getFilteredEvents', () => {
     });
 
     // Act
-    const filteredEvents = getFilteredEvents([event1, event2], '', new Date('2024-07-01'), 'month');
+    const filteredEvents = getFilteredEvents([event1, event2], '', new Date('2024-06-30'), 'month');
 
     // Assert
-    expect(filteredEvents).toMatchObject([event1]);
+    expect(filteredEvents).toMatchObject([event2]);
   });
 
   it('빈 이벤트 리스트에 대해 빈 배열을 반환한다', () => {
