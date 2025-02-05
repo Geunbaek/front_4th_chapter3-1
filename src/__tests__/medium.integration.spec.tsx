@@ -76,6 +76,7 @@ const checkEventItem = async (event: Event) => {
 describe('일정 CRUD 및 기본 기능', () => {
   it('새로운 일정을 생성하면, 모든 입력값이 이벤트 리스트에 올바르게 반영된다.', async () => {
     // Arrange
+    setupMockHandlerCreation([]);
     const now = formatDate(new Date());
     const testEvent = createRandomEvent({
       date: now,
@@ -375,7 +376,7 @@ describe('일정 충돌', () => {
       endTime: '15:00',
     });
     const updatedEvent = {
-      ...testEvent,
+      ...additionalEvent,
       startTime: '13:30',
     };
     setupMockHandlerCreation([testEvent, additionalEvent]);
