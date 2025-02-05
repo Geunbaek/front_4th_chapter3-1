@@ -3,15 +3,19 @@ import { http, HttpResponse } from 'msw';
 import { addEvent, makeNewEvent } from './utils';
 import { Event, EventForm } from '../../types';
 
-export const getEvents = (mockData: { events: Event[] }) => {
+export const getEvents = (mockData: { events: Event[] }, isError?: boolean) => {
   return http.get('/api/events', () => {
+    if (isError) return HttpResponse.json(null, { status: 500 });
+
     return HttpResponse.json(mockData);
   });
 };
 
-export const createEvent = (mockData: { events: Event[] }) => {
+export const createEvent = (mockData: { events: Event[] }, isError?: boolean) => {
   return http.post('/api/events', async ({ request }) => {
-    const eventForm = (await request.json()) as EventForm;
+    if (isError) return HttpResponse.json(null, { status: 500 });
+
+    const eventForm = (await request.json()) as EventForm | Event;
 
     const newEvent = makeNewEvent(eventForm);
     mockData.events = addEvent(mockData.events, newEvent);
@@ -20,8 +24,10 @@ export const createEvent = (mockData: { events: Event[] }) => {
   });
 };
 
-export const updateEvent = (mockData: { events: Event[] }) => {
+export const updateEvent = (mockData: { events: Event[] }, isError?: boolean) => {
   return http.put('/api/events/:id', async ({ params, request }) => {
+    if (isError) return HttpResponse.json(null, { status: 500 });
+
     const { id } = params;
     const foundEvent = mockData.events.find((event) => event.id === id);
 
@@ -35,8 +41,10 @@ export const updateEvent = (mockData: { events: Event[] }) => {
   });
 };
 
-export const deleteEvent = (mockData: { events: Event[] }) => {
+export const deleteEvent = (mockData: { events: Event[] }, isError?: boolean) => {
   return http.delete('/api/events/:id', async ({ params }) => {
+    if (isError) return HttpResponse.json(null, { status: 500 });
+
     const { id } = params;
     const foundEvent = mockData.events.find((event) => event.id === id);
 
