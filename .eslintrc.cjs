@@ -3,6 +3,7 @@ module.exports = {
   plugins: ['react', 'react-hooks', 'prettier'],
   extends: [
     'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
     'plugin:react-hooks/recommended',
     'plugin:storybook/recommended',
     'plugin:prettier/recommended',
@@ -20,7 +21,7 @@ module.exports = {
     ecmaVersion: 2022,
   },
   rules: {
-    'no-unused-vars': 'warn',
+    'no-unused-vars': 'off',
     'react/prop-types': 'off',
     'import/order': [
       'error',
