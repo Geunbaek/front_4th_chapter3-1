@@ -1,9 +1,10 @@
-import { Alert, AlertIcon, AlertTitle, Box, CloseButton, Flex, VStack } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 import { useState } from 'react';
 
 import EventForm from './components/EventForm.tsx';
 import EventList from './components/EventList.tsx';
 import EventView from './components/EventView.tsx';
+import NotificationList from './components/NotificationList.tsx';
 import { useCalendarView } from './hooks/useCalendarView.ts';
 import { useEventOperations } from './hooks/useEventOperations.ts';
 import { useNotifications } from './hooks/useNotifications.ts';
@@ -38,30 +39,16 @@ function App() {
           notifiedEvents={notifiedEvents}
           holidays={holidays}
         />
+        <EventList
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+          filteredEvents={filteredEvents}
+          notifiedEvents={notifiedEvents}
+          editEvent={editEvent}
+          deleteEvent={deleteEvent}
+        />
       </Flex>
-      <EventList
-        searchTerm={searchTerm}
-        setSearchTerm={setSearchTerm}
-        filteredEvents={filteredEvents}
-        notifiedEvents={notifiedEvents}
-        editEvent={editEvent}
-        deleteEvent={deleteEvent}
-      />
-      {notifications.length > 0 && (
-        <VStack position="fixed" top={4} right={4} spacing={2} align="flex-end">
-          {notifications.map((notification, index) => (
-            <Alert key={index} status="info" variant="solid" width="auto">
-              <AlertIcon />
-              <Box flex="1">
-                <AlertTitle fontSize="sm">{notification.message}</AlertTitle>
-              </Box>
-              <CloseButton
-                onClick={() => setNotifications((prev) => prev.filter((_, i) => i !== index))}
-              />
-            </Alert>
-          ))}
-        </VStack>
-      )}
+      <NotificationList notifications={notifications} setNotifications={setNotifications} />
     </Box>
   );
 }
