@@ -1,34 +1,9 @@
-import {
-  BellIcon,
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  DeleteIcon,
-  EditIcon,
-} from '@chakra-ui/icons';
-import {
-  Alert,
-  AlertIcon,
-  AlertTitle,
-  Box,
-  CloseButton,
-  Flex,
-  FormControl,
-  FormLabel,
-  Heading,
-  HStack,
-  IconButton,
-  Input,
-  Select,
-  Text,
-  VStack,
-} from '@chakra-ui/react';
+import { Alert, AlertIcon, AlertTitle, Box, CloseButton, Flex, VStack } from '@chakra-ui/react';
 import { useState } from 'react';
 
 import EventForm from './components/EventForm.tsx';
 import EventList from './components/EventList.tsx';
-import MonthView from './components/MonthView.tsx';
-import WeekView from './components/WeekView.tsx';
-import { notificationOptions } from './constants.ts';
+import EventView from './components/EventView.tsx';
 import { useCalendarView } from './hooks/useCalendarView.ts';
 import { useEventOperations } from './hooks/useEventOperations.ts';
 import { useNotifications } from './hooks/useNotifications.ts';
@@ -50,58 +25,19 @@ function App() {
     setEditingEvent(event);
   };
 
-  const renderWeekView = () => {
-    return (
-      <WeekView
-        currentDate={currentDate}
-        filteredEvents={filteredEvents}
-        notifiedEvents={notifiedEvents}
-      />
-    );
-  };
-
-  const renderMonthView = () => {
-    return (
-      <MonthView
-        currentDate={currentDate}
-        holidays={holidays}
-        filteredEvents={filteredEvents}
-        notifiedEvents={notifiedEvents}
-      />
-    );
-  };
-
   return (
     <Box w="full" h="100vh" m="auto" p={5}>
       <Flex gap={6} h="full">
         <EventForm editingEvent={editingEvent} events={events} onSubmit={saveEvent} />
-        <VStack flex={1} spacing={5} align="stretch">
-          <Heading>일정 보기</Heading>
-
-          <HStack mx="auto" justifyContent="space-between">
-            <IconButton
-              aria-label="Previous"
-              icon={<ChevronLeftIcon />}
-              onClick={() => navigate('prev')}
-            />
-            <Select
-              aria-label="view"
-              value={view}
-              onChange={(e) => setView(e.target.value as 'week' | 'month')}
-            >
-              <option value="week">Week</option>
-              <option value="month">Month</option>
-            </Select>
-            <IconButton
-              aria-label="Next"
-              icon={<ChevronRightIcon />}
-              onClick={() => navigate('next')}
-            />
-          </HStack>
-
-          {view === 'week' && renderWeekView()}
-          {view === 'month' && renderMonthView()}
-        </VStack>
+        <EventView
+          view={view}
+          setView={setView}
+          navigate={navigate}
+          currentDate={currentDate}
+          filteredEvents={filteredEvents}
+          notifiedEvents={notifiedEvents}
+          holidays={holidays}
+        />
       </Flex>
       <EventList
         searchTerm={searchTerm}
