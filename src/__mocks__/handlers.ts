@@ -1,6 +1,6 @@
 import { Event } from '../types';
 import { createEvent, deleteEvent, getEvents, updateEvent } from './events/api';
-import { events } from './response/events.json' assert { type: 'json' };
+import { events } from './response/events.json';
 
 const mockData = {
   events: events as Event[],
