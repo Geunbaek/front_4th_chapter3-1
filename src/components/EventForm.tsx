@@ -1,10 +1,4 @@
 import {
-  AlertDialog,
-  AlertDialogBody,
-  AlertDialogContent,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogOverlay,
   Button,
   Checkbox,
   FormControl,
@@ -13,7 +7,6 @@ import {
   HStack,
   Input,
   Select,
-  Text,
   Tooltip,
   useToast,
   VStack,
@@ -23,6 +16,7 @@ import { useRef, useState } from 'react';
 import { categories, notificationOptions } from '../constants';
 import { useEventForm } from '../hooks/useEventForm';
 import { Event, EventForm as EventFormData, RepeatType } from '../types';
+import EventOverlapAlertDialog from './EventOverlapAlertDialog';
 import { findOverlappingEvents } from '../utils/eventOverlap';
 import { getTimeErrorMessage } from '../utils/timeValidation';
 
@@ -62,7 +56,6 @@ function EventForm({ editingEvent, events, onSubmit }: EventFormProps) {
     handleEndTimeChange,
     resetForm,
   } = useEventForm(editingEvent ?? undefined);
-
   const [isOverlapDialogOpen, setIsOverlapDialogOpen] = useState(false);
   const [overlappingEvents, setOverlappingEvents] = useState<Event[]>([]);
   const cancelRef = useRef<HTMLButtonElement>(null);
@@ -109,8 +102,8 @@ function EventForm({ editingEvent, events, onSubmit }: EventFormProps) {
 
     const overlapping = findOverlappingEvents(eventData, events);
     if (overlapping.length > 0) {
-      setOverlappingEvents(overlapping);
       setIsOverlapDialogOpen(true);
+      setOverlappingEvents(overlapping);
     } else {
       await onSubmit(eventData);
       resetForm();
@@ -237,66 +230,33 @@ function EventForm({ editingEvent, events, onSubmit }: EventFormProps) {
             </HStack>
           </VStack>
         )}
-
         <Button data-testid="event-submit-button" onClick={addOrUpdateEvent} colorScheme="blue">
           {editingEvent ? '일정 수정' : '일정 추가'}
         </Button>
       </VStack>
-
-      <AlertDialog
+      <EventOverlapAlertDialog
         isOpen={isOverlapDialogOpen}
-        leastDestructiveRef={cancelRef}
-        onClose={() => setIsOverlapDialogOpen(false)}
-      >
-        <AlertDialogOverlay>
-          <AlertDialogContent>
-            <AlertDialogHeader fontSize="lg" fontWeight="bold">
-              일정 겹침 경고
-            </AlertDialogHeader>
-
-            <AlertDialogBody>
-              다음 일정과 겹칩니다:
-              {overlappingEvents.map((event) => (
-                <Text key={event.id}>
-                  {event.title} ({event.date} {event.startTime}-{event.endTime})
-                </Text>
-              ))}
-              계속 진행하시겠습니까?
-            </AlertDialogBody>
-
-            <AlertDialogFooter>
-              <Button ref={cancelRef} onClick={() => setIsOverlapDialogOpen(false)}>
-                취소
-              </Button>
-              <Button
-                colorScheme="red"
-                onClick={() => {
-                  setIsOverlapDialogOpen(false);
-                  onSubmit({
-                    id: editingEvent ? editingEvent.id : undefined,
-                    title,
-                    date,
-                    startTime,
-                    endTime,
-                    description,
-                    location,
-                    category,
-                    repeat: {
-                      type: isRepeating ? repeatType : 'none',
-                      interval: repeatInterval,
-                      endDate: repeatEndDate || undefined,
-                    },
-                    notificationTime,
-                  });
-                }}
-                ml={3}
-              >
-                계속 진행
-              </Button>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialogOverlay>
-      </AlertDialog>
+        overlappingEvents={overlappingEvents}
+        onConfirm={onSubmit}
+        close={() => setIsOverlapDialogOpen(false)}
+        cancelRef={cancelRef}
+        savedEvent={{
+          id: editingEvent ? editingEvent.id : undefined,
+          title,
+          date,
+          startTime,
+          endTime,
+          description,
+          location,
+          category,
+          repeat: {
+            type: isRepeating ? repeatType : 'none',
+            interval: repeatInterval,
+            endDate: repeatEndDate || undefined,
+          },
+          notificationTime,
+        }}
+      />
     </>
   );
 }
