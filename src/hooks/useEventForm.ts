@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 
 import { Event, RepeatType } from '../types';
 import { getTimeErrorMessage } from '../utils/timeValidation';
@@ -50,6 +50,21 @@ export const useEventForm = (initialEvent?: Event) => {
     setRepeatEndDate('');
     setNotificationTime(10);
   };
+
+  useEffect(() => {
+    setTitle(initialEvent?.title || '');
+    setDate(initialEvent?.date || '');
+    setStartTime(initialEvent?.startTime || '');
+    setEndTime(initialEvent?.endTime || '');
+    setDescription(initialEvent?.description || '');
+    setLocation(initialEvent?.location || '');
+    setCategory(initialEvent?.category || '');
+    setIsRepeating(initialEvent?.repeat.type !== 'none');
+    setRepeatType(initialEvent?.repeat.type || 'none');
+    setRepeatInterval(initialEvent?.repeat.interval || 1);
+    setRepeatEndDate(initialEvent?.repeat.endDate || '');
+    setNotificationTime(initialEvent?.notificationTime || 10);
+  }, [initialEvent]);
 
   return {
     title,
