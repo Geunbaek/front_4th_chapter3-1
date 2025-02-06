@@ -8,14 +8,13 @@ import {
   Button,
   Text,
 } from '@chakra-ui/react';
-import { RefObject } from 'react';
+import { useRef } from 'react';
 
 import { Event, EventForm } from '../types';
 
 interface EventOverlapAlertDialogProps {
   isOpen: boolean;
   overlappingEvents: Event[];
-  cancelRef: RefObject<HTMLButtonElement>;
   savedEvent: Event | EventForm;
   onConfirm: (event: Event | EventForm) => void;
   close: () => void;
@@ -24,13 +23,13 @@ interface EventOverlapAlertDialogProps {
 function EventOverlapAlertDialog({
   isOpen,
   overlappingEvents,
-  cancelRef,
   savedEvent,
   onConfirm,
   close,
 }: EventOverlapAlertDialogProps) {
+  const ref = useRef<HTMLButtonElement>(null);
   return (
-    <AlertDialog isOpen={isOpen} leastDestructiveRef={cancelRef} onClose={close}>
+    <AlertDialog isOpen={isOpen} leastDestructiveRef={ref} onClose={close}>
       <AlertDialogOverlay>
         <AlertDialogContent>
           <AlertDialogHeader fontSize="lg" fontWeight="bold">
@@ -48,7 +47,7 @@ function EventOverlapAlertDialog({
           </AlertDialogBody>
 
           <AlertDialogFooter>
-            <Button ref={cancelRef} onClick={close}>
+            <Button ref={ref} onClick={close}>
               취소
             </Button>
             <Button

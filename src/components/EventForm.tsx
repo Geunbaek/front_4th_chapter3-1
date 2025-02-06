@@ -11,7 +11,7 @@ import {
   useToast,
   VStack,
 } from '@chakra-ui/react';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 
 import { categories, notificationOptions } from '../constants';
 import { useEventForm } from '../hooks/useEventForm';
@@ -58,7 +58,6 @@ function EventForm({ editingEvent, events, onSubmit }: EventFormProps) {
   } = useEventForm(editingEvent ?? undefined);
   const [isOverlapDialogOpen, setIsOverlapDialogOpen] = useState(false);
   const [overlappingEvents, setOverlappingEvents] = useState<Event[]>([]);
-  const cancelRef = useRef<HTMLButtonElement>(null);
 
   const toast = useToast();
 
@@ -239,7 +238,6 @@ function EventForm({ editingEvent, events, onSubmit }: EventFormProps) {
         overlappingEvents={overlappingEvents}
         onConfirm={onSubmit}
         close={() => setIsOverlapDialogOpen(false)}
-        cancelRef={cancelRef}
         savedEvent={{
           id: editingEvent ? editingEvent.id : undefined,
           title,
