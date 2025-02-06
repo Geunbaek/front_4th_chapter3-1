@@ -1,6 +1,7 @@
 import { useToast } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 
+import * as apis from '../apis/events';
 import { Event, EventForm } from '../types';
 
 export const useEventOperations = (editing: boolean, onSave?: () => void) => {
@@ -9,11 +10,7 @@ export const useEventOperations = (editing: boolean, onSave?: () => void) => {
 
   const fetchEvents = async () => {
     try {
-      const response = await fetch('/api/events');
-      if (!response.ok) {
-        throw new Error('Failed to fetch events');
-      }
-      const { events } = await response.json();
+      const events = await apis.fetchEvents();
       setEvents(events);
     } catch (error) {
       console.error('Error fetching events:', error);
@@ -28,23 +25,10 @@ export const useEventOperations = (editing: boolean, onSave?: () => void) => {
 
   const saveEvent = async (eventData: Event | EventForm) => {
     try {
-      let response;
       if (editing) {
-        response = await fetch(`/api/events/${(eventData as Event).id}`, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(eventData),
-        });
+        await apis.updateEvent(eventData as Event);
       } else {
-        response = await fetch('/api/events', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(eventData),
-        });
-      }
-
-      if (!response.ok) {
-        throw new Error('Failed to save event');
+        await apis.addEvent(eventData as EventForm);
       }
 
       await fetchEvents();
@@ -68,12 +52,7 @@ export const useEventOperations = (editing: boolean, onSave?: () => void) => {
 
   const deleteEvent = async (id: string) => {
     try {
-      const response = await fetch(`/api/events/${id}`, { method: 'DELETE' });
-
-      if (!response.ok) {
-        throw new Error('Failed to delete event');
-      }
-
+      await apis.deleteEvent(id);
       await fetchEvents();
       toast({
         title: '일정이 삭제되었습니다.',
