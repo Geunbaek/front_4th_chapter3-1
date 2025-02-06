@@ -20,7 +20,7 @@ export const createEvent = (mockData: { events: Event[] }, isError?: boolean) =>
     const newEvent = makeNewEvent(eventForm);
     mockData.events = addEvent(mockData.events, newEvent);
 
-    return HttpResponse.json(mockData);
+    return HttpResponse.json(newEvent, { status: 201 });
   });
 };
 
@@ -37,7 +37,7 @@ export const updateEvent = (mockData: { events: Event[] }, isError?: boolean) =>
     const updatedEvent: Event = { id: id as string, ...updatedEventForm };
     mockData.events = mockData.events.map((event) => (event.id === id ? updatedEvent : event));
 
-    return HttpResponse.json({ event: updatedEvent });
+    return HttpResponse.json(updatedEvent);
   });
 };
 
@@ -52,6 +52,6 @@ export const deleteEvent = (mockData: { events: Event[] }, isError?: boolean) =>
 
     mockData.events = mockData.events.filter((event) => event.id !== id);
 
-    return new HttpResponse(null, { status: 201 });
+    return new HttpResponse(null, { status: 204 });
   });
 };
