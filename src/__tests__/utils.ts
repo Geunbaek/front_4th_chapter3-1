@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 
-import { categories, notificationOptions } from '../App';
+import { categories, notificationOptions } from '../constants';
 import { Event } from '../types';
 import { fillZero, formatDate } from '../utils/dateUtils';
 

@@ -7,7 +7,8 @@ import {
   setupMockHandlerDeletion,
   setupMockHandlerUpdating,
 } from '../__mocks__/handlersUtils';
-import App, { notificationOptions } from '../App';
+import App from '../App';
+import { notificationOptions } from '../constants';
 import { Event, EventForm } from '../types';
 import { createRandomEvent } from './utils';
 import { formatDate } from '../utils/dateUtils';
@@ -88,6 +89,7 @@ describe('일정 CRUD 및 기본 기능', () => {
         <App />
       </ChakraProvider>
     );
+
     await typeEventForm(testEvent, user);
     await user.click(screen.getByRole('button', { name: /일정 추가/ }));
 
