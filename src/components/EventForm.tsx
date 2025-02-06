@@ -17,7 +17,7 @@ import { categories, notificationOptions } from '../constants';
 import { useEventForm } from '../hooks/useEventForm';
 import { Event, EventForm as EventFormData, RepeatType } from '../types';
 import EventOverlapAlertDialog from './EventOverlapAlertDialog';
-import { findOverlappingEvents } from '../utils/eventOverlap';
+import useEventOverlapCheck from '../hooks/useEventOverlapCheck';
 import { getTimeErrorMessage } from '../utils/timeValidation';
 
 interface EventFormProps {
@@ -56,8 +56,9 @@ function EventForm({ editingEvent, events, onSubmit }: EventFormProps) {
     handleEndTimeChange,
     resetForm,
   } = useEventForm(editingEvent ?? undefined);
+
+  const { overlappingEvents, checkOverlap } = useEventOverlapCheck(events);
   const [isOverlapDialogOpen, setIsOverlapDialogOpen] = useState(false);
-  const [overlappingEvents, setOverlappingEvents] = useState<Event[]>([]);
 
   const toast = useToast();
 
@@ -99,10 +100,8 @@ function EventForm({ editingEvent, events, onSubmit }: EventFormProps) {
       notificationTime,
     };
 
-    const overlapping = findOverlappingEvents(eventData, events);
-    if (overlapping.length > 0) {
+    if (checkOverlap(eventData)) {
       setIsOverlapDialogOpen(true);
-      setOverlappingEvents(overlapping);
     } else {
       await onSubmit(eventData);
       resetForm();
